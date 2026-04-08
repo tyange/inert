@@ -76,7 +76,7 @@ function StillPage() {
         <div className="sticky top-0 z-30 h-0">
           <Link
             to="/"
-            className="absolute top-4 -left-12 flex items-center justify-center w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm text-white hover:bg-black/60 no-underline"
+            className="absolute top-4 -left-12 flex items-center justify-center w-9 h-9 rounded-full bg-(--surface) backdrop-blur-sm text-(--sea-ink) hover:bg-(--surface-strong) border border-(--line) no-underline"
           >
             <ArrowLeft size={18} />
           </Link>

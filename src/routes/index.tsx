@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useCallback, useEffect, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { BookOpen, ArrowUp, LogIn } from "lucide-react";
+import { BookOpen, ArrowUp } from "lucide-react";
+import Header from "../components/Header";
 
 const DUMMY_STILLS = [
   {
@@ -157,20 +158,7 @@ function FeedPage() {
 
   return (
     <>
-      <header>
-        <div className="max-w-lg mx-auto flex items-center justify-between px-4 h-12">
-          <span className="font-sans text-base font-bold tracking-tight text-(--sea-ink)">
-            inert
-          </span>
-          <Link
-            to="/login"
-            className="font-sans inline-flex items-center gap-1.5 text-xs font-medium text-(--sea-ink-soft) hover:text-(--sea-ink) no-underline"
-          >
-            <LogIn size={14} />
-            로그인
-          </Link>
-        </div>
-      </header>
+      <Header />
 
       <div className="max-w-lg mx-auto flex flex-col divide-y divide-(--line)">
         {DUMMY_STILLS.map((still) => (
@@ -200,7 +188,7 @@ function FeedPage() {
         <button
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-6 right-6 z-30 flex items-center justify-center w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm text-white hover:bg-black/60 cursor-pointer border-none"
+          className="fixed bottom-6 right-6 z-30 flex items-center justify-center w-10 h-10 rounded-full bg-(--surface) backdrop-blur-sm text-(--sea-ink) hover:bg-(--surface-strong) cursor-pointer border border-(--line)"
         >
           <ArrowUp size={18} />
         </button>

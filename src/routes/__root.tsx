@@ -1,4 +1,6 @@
-import { HeadContent, Scripts, createRootRoute, Outlet } from '@tanstack/react-router'
+import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
+import { getCookie } from '@tanstack/react-start/server'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import appCss from '../styles.css?url'
@@ -6,7 +8,17 @@ import appCss from '../styles.css?url'
 const queryClient = new QueryClient()
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID ?? ''
 
+const getTheme = createServerFn().handler(async () => {
+  const theme = getCookie('theme')
+  if (theme === 'light' || theme === 'dark') return theme
+  return null
+})
+
 export const Route = createRootRoute({
+  beforeLoad: async () => {
+    const theme = await getTheme()
+    return { theme }
+  },
   head: () => ({
     meta: [
       { charSet: 'utf-8' },
@@ -20,12 +32,20 @@ export const Route = createRootRoute({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const { theme } = Route.useRouteContext()
+  const resolved = theme ?? 'light'
+
   return (
-    <html lang="ko">
+    <html
+      lang="ko"
+      className={resolved}
+      data-theme={theme ?? undefined}
+      style={{ colorScheme: resolved }}
+    >
       <head>
         <HeadContent />
       </head>
-      <body className="bg-black text-white min-h-screen">
+      <body className="bg-(--bg-base) text-(--sea-ink) min-h-screen">
         <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
           <QueryClientProvider client={queryClient}>
             {children}

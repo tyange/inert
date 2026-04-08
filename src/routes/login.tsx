@@ -14,10 +14,10 @@ function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="flex flex-col items-center gap-8">
-        <h1 className="text-3xl font-light tracking-widest text-white">inert</h1>
-        <p className="text-neutral-500 text-sm">무해한 사진과 글</p>
+        <h1 className="text-3xl font-light tracking-widest text-(--sea-ink)">inert</h1>
+        <p className="text-(--sea-ink-soft) text-sm">무해한 사진과 글</p>
         <GoogleLogin
           onSuccess={async (credentialResponse) => {
             try {

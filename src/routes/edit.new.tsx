@@ -70,12 +70,12 @@ function EditNewPage() {
           {previews.length > 0 ? (
             <div className="grid grid-cols-3 gap-1 mb-3">
               {previews.map((src, i) => (
-                <div key={i} className="aspect-square relative overflow-hidden bg-neutral-900 group">
+                <div key={i} className="aspect-square relative overflow-hidden bg-(--surface) group">
                   <img src={src} alt="" className="w-full h-full object-cover" />
                   <button
                     type="button"
                     onClick={() => removeImage(i)}
-                    className="absolute top-1 right-1 w-6 h-6 bg-black/60 rounded-full text-white text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
+                    className="absolute top-1 right-1 w-6 h-6 bg-(--surface)/60 rounded-full text-(--sea-ink) text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-(--surface-strong)"
                   >
                     ×
                   </button>
@@ -85,7 +85,7 @@ function EditNewPage() {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="aspect-square bg-neutral-900 border border-dashed border-neutral-700 flex items-center justify-center text-neutral-500 hover:border-neutral-500 hover:text-neutral-300 transition-colors text-2xl"
+                  className="aspect-square bg-(--surface) border border-dashed border-(--line) flex items-center justify-center text-(--sea-ink-soft) hover:border-(--sea-ink-soft) hover:text-(--sea-ink) transition-colors text-2xl cursor-pointer"
                 >
                   +
                 </button>
@@ -95,7 +95,7 @@ function EditNewPage() {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="w-full aspect-video bg-neutral-900 border border-dashed border-neutral-700 flex flex-col items-center justify-center gap-2 text-neutral-500 hover:border-neutral-500 hover:text-neutral-300 transition-colors"
+              className="w-full aspect-video bg-(--surface) border border-dashed border-(--line) flex flex-col items-center justify-center gap-2 text-(--sea-ink-soft) hover:border-(--sea-ink-soft) hover:text-(--sea-ink) transition-colors cursor-pointer"
             >
               <span className="text-3xl">+</span>
               <span className="text-sm">이미지 추가 (최대 10장)</span>
@@ -118,7 +118,7 @@ function EditNewPage() {
           placeholder="캡션을 입력하세요 (선택)"
           maxLength={2200}
           rows={4}
-          className="bg-neutral-900 border border-neutral-800 text-white placeholder-neutral-600 px-4 py-3 text-sm resize-none focus:outline-none focus:border-neutral-600"
+          className="bg-(--surface) border border-(--line) text-(--sea-ink) placeholder-current/40 px-4 py-3 text-sm resize-none focus:outline-none focus:border-(--sea-ink-soft)"
         />
 
         {error && (
@@ -130,14 +130,14 @@ function EditNewPage() {
             type="button"
             onClick={() => navigate({ to: '/edit' })}
             disabled={isSubmitting}
-            className="flex-1 py-3 border border-neutral-700 text-sm hover:border-neutral-500 transition-colors disabled:opacity-50"
+            className="flex-1 py-3 border border-(--line) text-sm text-(--sea-ink) hover:border-(--sea-ink-soft) transition-colors disabled:opacity-50 cursor-pointer bg-transparent"
           >
             취소
           </button>
           <button
             type="submit"
             disabled={isSubmitting || files.length === 0}
-            className="flex-1 py-3 bg-white text-black text-sm font-medium hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 py-3 bg-(--sea-ink) text-(--bg-base) text-sm font-medium hover:opacity-80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer border-none"
           >
             {isSubmitting ? '업로드 중...' : '올리기'}
           </button>

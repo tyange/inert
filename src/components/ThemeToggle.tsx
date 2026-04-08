@@ -1,16 +1,25 @@
 import { useEffect, useState } from 'react'
+import { Sun, Moon, Monitor } from 'lucide-react'
 
 type ThemeMode = 'light' | 'dark' | 'auto'
 
-function getInitialMode(): ThemeMode {
-  if (typeof window === 'undefined') {
-    return 'auto'
-  }
+function getCookieValue(name: string): string | null {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`))
+  return match ? decodeURIComponent(match[1]) : null
+}
 
-  const stored = window.localStorage.getItem('theme')
-  if (stored === 'light' || stored === 'dark' || stored === 'auto') {
-    return stored
-  }
+function setThemeCookie(mode: ThemeMode) {
+  const maxAge = mode === 'auto' ? 0 : 60 * 60 * 24 * 365
+  document.cookie = `theme=${mode}; path=/; max-age=${maxAge}; SameSite=Lax`
+}
+
+function getInitialMode(serverTheme: 'light' | 'dark' | null): ThemeMode {
+  if (serverTheme) return serverTheme
+
+  if (typeof window === 'undefined') return 'auto'
+
+  const stored = getCookieValue('theme')
+  if (stored === 'light' || stored === 'dark') return stored
 
   return 'auto'
 }
@@ -31,27 +40,21 @@ function applyThemeMode(mode: ThemeMode) {
   document.documentElement.style.colorScheme = resolved
 }
 
-export default function ThemeToggle() {
-  const [mode, setMode] = useState<ThemeMode>('auto')
+export default function ThemeToggle({ serverTheme }: { serverTheme: 'light' | 'dark' | null }) {
+  const [mode, setMode] = useState<ThemeMode>(() => getInitialMode(serverTheme))
 
   useEffect(() => {
-    const initialMode = getInitialMode()
-    setMode(initialMode)
-    applyThemeMode(initialMode)
+    applyThemeMode(mode)
   }, [])
 
   useEffect(() => {
-    if (mode !== 'auto') {
-      return
-    }
+    if (mode !== 'auto') return
 
     const media = window.matchMedia('(prefers-color-scheme: dark)')
     const onChange = () => applyThemeMode('auto')
 
     media.addEventListener('change', onChange)
-    return () => {
-      media.removeEventListener('change', onChange)
-    }
+    return () => media.removeEventListener('change', onChange)
   }, [mode])
 
   function toggleMode() {
@@ -59,7 +62,7 @@ export default function ThemeToggle() {
       mode === 'light' ? 'dark' : mode === 'dark' ? 'auto' : 'light'
     setMode(nextMode)
     applyThemeMode(nextMode)
-    window.localStorage.setItem('theme', nextMode)
+    setThemeCookie(nextMode)
   }
 
   const label =
@@ -67,15 +70,17 @@ export default function ThemeToggle() {
       ? 'Theme mode: auto (system). Click to switch to light mode.'
       : `Theme mode: ${mode}. Click to switch mode.`
 
+  const Icon = mode === 'auto' ? Monitor : mode === 'dark' ? Moon : Sun
+
   return (
     <button
       type="button"
       onClick={toggleMode}
       aria-label={label}
       title={label}
-      className="rounded-full border border-[var(--chip-line)] bg-[var(--chip-bg)] px-3 py-1.5 text-sm font-semibold text-[var(--sea-ink)] shadow-[0_8px_22px_rgba(30,90,72,0.08)] transition hover:-translate-y-0.5"
+      className="inline-flex items-center gap-1.5 text-xs font-medium text-(--sea-ink-soft) hover:text-(--sea-ink) cursor-pointer bg-transparent border-none p-0"
     >
-      {mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light'}
+      <Icon size={14} />
     </button>
   )
 }
