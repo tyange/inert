@@ -67,7 +67,7 @@ function EditProfilePage() {
   }
 
   return (
-    <div className="max-w-[600px] mx-auto px-4 py-8">
+    <div className="max-w-lg mx-auto px-4 py-8">
       <h2 className="text-lg font-medium mb-6">프로필 수정</h2>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">

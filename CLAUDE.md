@@ -36,6 +36,6 @@ TanStack Start + React + Tailwind v4, bun 사용.
 - 완료: 밝은 테마 지원 — 전 페이지 CSS 변수 기반 테마 시스템 적용
 - 완료: 쿠키 기반 테마 저장 + SSR 서버 사이드 테마 적용 (FOUC 방지)
 - 완료: Header 컴포넌트 단순화 및 ThemeToggle 아이콘화 (lucide-react)
-- 진행중(미커밋): 위 테마 작업 전체 — 커밋 필요
+- 완료: 프로필 수정 페이지 (`/edit/profile`) — 사용자명 변경, `PUT /auth/me` API 연동
 - 미완료: 배포 설정 (프론트엔드 호스팅 미결정)
 - 미완료: 사용자 공개 페이지 (`/u/$username`)

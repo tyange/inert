@@ -87,7 +87,7 @@ function StillPage() {
         </div>
 
         <div className="px-6 sm:px-12 py-8 sm:py-12">
-          <div className="prose prose-lg max-w-none text-(--sea-ink)">
+          <div className="prose prose-lg max-w-none text-(--sea-ink) font-serif">
             {still.caption.split("\n\n").map((paragraph, i) => (
               <p key={i} className="text-base sm:text-lg leading-8 sm:leading-9 mb-6 last:mb-0">
                 {paragraph}

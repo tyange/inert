@@ -1,67 +1,67 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState, useRef } from 'react'
-import { api } from '#/lib/api'
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState, useRef } from "react";
+import { api } from "#/lib/api";
 
-export const Route = createFileRoute('/edit/new')({ component: EditNewPage })
+export const Route = createFileRoute("/edit/new")({ component: EditNewPage });
 
 function EditNewPage() {
-  const navigate = useNavigate()
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [previews, setPreviews] = useState<string[]>([])
-  const [files, setFiles] = useState<File[]>([])
-  const [caption, setCaption] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [previews, setPreviews] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
+  const [caption, setCaption] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const selected = Array.from(e.target.files ?? [])
-    if (selected.length === 0) return
+    const selected = Array.from(e.target.files ?? []);
+    if (selected.length === 0) return;
 
-    const combined = [...files, ...selected].slice(0, 10)
-    setFiles(combined)
-    setPreviews(combined.map((f) => URL.createObjectURL(f)))
+    const combined = [...files, ...selected].slice(0, 10);
+    setFiles(combined);
+    setPreviews(combined.map((f) => URL.createObjectURL(f)));
   }
 
   function removeImage(index: number) {
-    const nextFiles = files.filter((_, i) => i !== index)
-    const nextPreviews = previews.filter((_, i) => i !== index)
-    setFiles(nextFiles)
-    setPreviews(nextPreviews)
+    const nextFiles = files.filter((_, i) => i !== index);
+    const nextPreviews = previews.filter((_, i) => i !== index);
+    setFiles(nextFiles);
+    setPreviews(nextPreviews);
   }
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
+    e.preventDefault();
     if (files.length === 0) {
-      setError('이미지를 한 장 이상 추가해주세요')
-      return
+      setError("이미지를 한 장 이상 추가해주세요");
+      return;
     }
 
-    setIsSubmitting(true)
-    setError(null)
+    setIsSubmitting(true);
+    setError(null);
 
     try {
-      const imageKeys: string[] = []
+      const imageKeys: string[] = [];
       for (const file of files) {
-        const result = await api.images.upload(file)
-        imageKeys.push(result.image_key)
+        const result = await api.images.upload(file);
+        imageKeys.push(result.image_key);
       }
 
       await api.stills.create({
         caption: caption.trim() || undefined,
         image_keys: imageKeys,
-      })
+      });
 
-      navigate({ to: '/edit' })
+      navigate({ to: "/edit" });
     } catch (e) {
-      console.error(e)
-      setError('업로드에 실패했어요. 다시 시도해주세요.')
-      setIsSubmitting(false)
+      console.error(e);
+      setError("업로드에 실패했어요. 다시 시도해주세요.");
+      setIsSubmitting(false);
     }
   }
 
   return (
-    <div className="max-w-[600px] mx-auto px-4 py-8">
+    <div className="max-w-lg mx-auto px-4 py-8">
       <h2 className="text-lg font-medium mb-6">새 스틸</h2>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -70,7 +70,10 @@ function EditNewPage() {
           {previews.length > 0 ? (
             <div className="grid grid-cols-3 gap-1 mb-3">
               {previews.map((src, i) => (
-                <div key={i} className="aspect-square relative overflow-hidden bg-(--surface) group">
+                <div
+                  key={i}
+                  className="aspect-square relative overflow-hidden bg-(--surface) group"
+                >
                   <img src={src} alt="" className="w-full h-full object-cover" />
                   <button
                     type="button"
@@ -121,14 +124,12 @@ function EditNewPage() {
           className="bg-(--surface) border border-(--line) text-(--sea-ink) placeholder-current/40 px-4 py-3 text-sm resize-none focus:outline-none focus:border-(--sea-ink-soft)"
         />
 
-        {error && (
-          <p className="text-red-400 text-sm">{error}</p>
-        )}
+        {error && <p className="text-red-400 text-sm">{error}</p>}
 
         <div className="flex gap-3">
           <button
             type="button"
-            onClick={() => navigate({ to: '/edit' })}
+            onClick={() => navigate({ to: "/edit" })}
             disabled={isSubmitting}
             className="flex-1 py-3 border border-(--line) text-sm text-(--sea-ink) hover:border-(--sea-ink-soft) transition-colors disabled:opacity-50 cursor-pointer bg-transparent"
           >
@@ -139,10 +140,10 @@ function EditNewPage() {
             disabled={isSubmitting || files.length === 0}
             className="flex-1 py-3 bg-(--sea-ink) text-(--bg-base) text-sm font-medium hover:opacity-80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer border-none"
           >
-            {isSubmitting ? '업로드 중...' : '올리기'}
+            {isSubmitting ? "업로드 중..." : "올리기"}
           </button>
         </div>
       </form>
     </div>
-  )
+  );
 }

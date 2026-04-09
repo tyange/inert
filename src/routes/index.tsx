@@ -129,11 +129,15 @@ function Caption({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
 
   if (!isLong || expanded) {
-    return <p className="text-sm leading-relaxed text-(--sea-ink) whitespace-pre-line">{text}</p>;
+    return (
+      <p className="font-serif text-sm leading-relaxed text-(--sea-ink) whitespace-pre-line">
+        {text}
+      </p>
+    );
   }
 
   return (
-    <p className="text-sm leading-relaxed text-(--sea-ink)">
+    <p className="font-serif text-sm leading-relaxed text-(--sea-ink)">
       {text.slice(0, CAPTION_CHAR_LIMIT).trimEnd()}...{" "}
       <button
         type="button"
@@ -174,7 +178,7 @@ function FeedPage() {
                 to="/s/$slug"
                 params={{ slug: still.slug }}
                 search={{ img: imageIndices[still.slug] ?? 0 }}
-                className="inline-flex items-center gap-1 mt-2 text-xs text-(--sea-ink-soft) hover:text-(--sea-ink) no-underline font-sans"
+                className="inline-flex items-center gap-1 mt-2 text-xs text-(--sea-ink-soft) hover:text-(--sea-ink) no-underline"
               >
                 <BookOpen size={13} />
                 읽기
