@@ -13,6 +13,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as EditRouteImport } from './routes/edit'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EditIndexRouteImport } from './routes/edit.index'
+import { Route as UUsernameRouteImport } from './routes/u.$username'
 import { Route as SSlugRouteImport } from './routes/s.$slug'
 import { Route as EditProfileRouteImport } from './routes/edit.profile'
 import { Route as EditNewRouteImport } from './routes/edit.new'
@@ -37,6 +38,11 @@ const EditIndexRoute = EditIndexRouteImport.update({
   path: '/',
   getParentRoute: () => EditRoute,
 } as any)
+const UUsernameRoute = UUsernameRouteImport.update({
+  id: '/u/$username',
+  path: '/u/$username',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SSlugRoute = SSlugRouteImport.update({
   id: '/s/$slug',
   path: '/s/$slug',
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/edit/new': typeof EditNewRoute
   '/edit/profile': typeof EditProfileRoute
   '/s/$slug': typeof SSlugRoute
+  '/u/$username': typeof UUsernameRoute
   '/edit/': typeof EditIndexRoute
 }
 export interface FileRoutesByTo {
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/edit/new': typeof EditNewRoute
   '/edit/profile': typeof EditProfileRoute
   '/s/$slug': typeof SSlugRoute
+  '/u/$username': typeof UUsernameRoute
   '/edit': typeof EditIndexRoute
 }
 export interface FileRoutesById {
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/edit/new': typeof EditNewRoute
   '/edit/profile': typeof EditProfileRoute
   '/s/$slug': typeof SSlugRoute
+  '/u/$username': typeof UUsernameRoute
   '/edit/': typeof EditIndexRoute
 }
 export interface FileRouteTypes {
@@ -89,9 +98,17 @@ export interface FileRouteTypes {
     | '/edit/new'
     | '/edit/profile'
     | '/s/$slug'
+    | '/u/$username'
     | '/edit/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/edit/new' | '/edit/profile' | '/s/$slug' | '/edit'
+  to:
+    | '/'
+    | '/login'
+    | '/edit/new'
+    | '/edit/profile'
+    | '/s/$slug'
+    | '/u/$username'
+    | '/edit'
   id:
     | '__root__'
     | '/'
@@ -100,6 +117,7 @@ export interface FileRouteTypes {
     | '/edit/new'
     | '/edit/profile'
     | '/s/$slug'
+    | '/u/$username'
     | '/edit/'
   fileRoutesById: FileRoutesById
 }
@@ -108,6 +126,7 @@ export interface RootRouteChildren {
   EditRoute: typeof EditRouteWithChildren
   LoginRoute: typeof LoginRoute
   SSlugRoute: typeof SSlugRoute
+  UUsernameRoute: typeof UUsernameRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -139,6 +158,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/edit/'
       preLoaderRoute: typeof EditIndexRouteImport
       parentRoute: typeof EditRoute
+    }
+    '/u/$username': {
+      id: '/u/$username'
+      path: '/u/$username'
+      fullPath: '/u/$username'
+      preLoaderRoute: typeof UUsernameRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/s/$slug': {
       id: '/s/$slug'
@@ -183,6 +209,7 @@ const rootRouteChildren: RootRouteChildren = {
   EditRoute: EditRouteWithChildren,
   LoginRoute: LoginRoute,
   SSlugRoute: SSlugRoute,
+  UUsernameRoute: UUsernameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

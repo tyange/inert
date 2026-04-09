@@ -16,9 +16,10 @@ TanStack Start + React + Tailwind v4, bun 사용.
 - `VITE_GOOGLE_CLIENT_ID` — Google OAuth Client ID
 
 ## 라우트 구조
-- `/` — 공개 피드 (3열 그리드)
+- `/` — 공개 피드 (API 연동)
 - `/login` — Google 로그인
 - `/s/$slug` — still 상세 페이지 (멀티 이미지 캐러셀)
+- `/u/$username` — 사용자 공개 프로필 + 스틸 목록
 - `/edit` — 편집 레이아웃 (로그인 필요)
 - `/edit/` — 내 스틸 목록
 - `/edit/new` — 새 스틸 작성
@@ -36,6 +37,7 @@ TanStack Start + React + Tailwind v4, bun 사용.
 - 완료: 밝은 테마 지원 — 전 페이지 CSS 변수 기반 테마 시스템 적용
 - 완료: 쿠키 기반 테마 저장 + SSR 서버 사이드 테마 적용 (FOUC 방지)
 - 완료: Header 컴포넌트 단순화 및 ThemeToggle 아이콘화 (lucide-react)
-- 완료: 프로필 수정 페이지 (`/edit/profile`) — 사용자명 변경, `PUT /auth/me` API 연동
+- 완료: 프로필 수정 페이지 (`/edit/profile`) — 사용자명/표시이름/bio 변경, `PUT /auth/me` API 연동
+- 완료: 사용자 공개 페이지 (`/u/$username`) — 프로필 + 스틸 목록
+- 완료: 공개 피드 실제 API 연동 (더미 데이터 제거)
 - 미완료: 배포 설정 (프론트엔드 호스팅 미결정)
-- 미완료: 사용자 공개 페이지 (`/u/$username`)

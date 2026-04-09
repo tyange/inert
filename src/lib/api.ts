@@ -74,11 +74,20 @@ export const api = {
       return authedRequest<StillsResponse>(`/stills/mine?${q}`);
     },
     get: (slug: string) => publicRequest<StillResponse>(`/s/${slug}`),
-    userStills: (username: string) => publicRequest<StillsResponse>(`/u/${username}`),
+    userStills: (username: string, params?: { limit?: number; offset?: number }) => {
+      const q = new URLSearchParams();
+      if (params?.limit) q.set("limit", String(params.limit));
+      if (params?.offset) q.set("offset", String(params.offset));
+      return publicRequest<StillsResponse>(`/u/${username}?${q}`);
+    },
     create: (body: { image_keys: string[]; caption?: string }) =>
       authedRequest<StillResponse>("/stills", "POST", body),
     delete: (still_id: string) =>
       authedRequest<{ still_id: string }>(`/stills/${still_id}`, "DELETE"),
+  },
+
+  users: {
+    profile: (username: string) => publicRequest<UserProfileResponse>(`/u/${username}/profile`),
   },
 
   images: {
@@ -122,6 +131,14 @@ export interface StillResponse {
 export interface StillsResponse {
   stills: StillResponse[];
   total: number;
+}
+
+export interface UserProfileResponse {
+  user_id: string;
+  username: string;
+  display_name: string | null;
+  avatar_url: string | null;
+  bio: string | null;
 }
 
 export interface UploadImageResponse {
