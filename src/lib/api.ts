@@ -48,6 +48,18 @@ export const api = {
         avatar_url: string | null
         bio: string | null
       }>('/auth/me'),
+    updateMe: (body: { username?: string; display_name?: string; bio?: string }) =>
+      request<{
+        user_id: string
+        email: string
+        username: string
+        display_name: string | null
+        avatar_url: string | null
+        bio: string | null
+      }>('/auth/me', {
+        method: 'PUT',
+        body: JSON.stringify(body),
+      }),
   },
 
   // ─── Stills ──────────────────────────────────────────────

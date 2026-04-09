@@ -20,6 +20,7 @@ function EditLayout() {
         <nav className="flex items-center gap-4 text-sm">
           <Link to="/edit" className="text-(--sea-ink) hover:opacity-70 transition-opacity no-underline">내 스틸</Link>
           <Link to="/edit/new" className="text-(--sea-ink) hover:opacity-70 transition-opacity no-underline">+ 새 스틸</Link>
+          <Link to="/edit/profile" className="text-(--sea-ink) hover:opacity-70 transition-opacity no-underline">프로필</Link>
           <button
             onClick={() => {
               auth.clearToken()

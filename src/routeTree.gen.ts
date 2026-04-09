@@ -14,6 +14,7 @@ import { Route as EditRouteImport } from './routes/edit'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EditIndexRouteImport } from './routes/edit.index'
 import { Route as SSlugRouteImport } from './routes/s.$slug'
+import { Route as EditProfileRouteImport } from './routes/edit.profile'
 import { Route as EditNewRouteImport } from './routes/edit.new'
 
 const LoginRoute = LoginRouteImport.update({
@@ -41,6 +42,11 @@ const SSlugRoute = SSlugRouteImport.update({
   path: '/s/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EditProfileRoute = EditProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => EditRoute,
+} as any)
 const EditNewRoute = EditNewRouteImport.update({
   id: '/new',
   path: '/new',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/edit': typeof EditRouteWithChildren
   '/login': typeof LoginRoute
   '/edit/new': typeof EditNewRoute
+  '/edit/profile': typeof EditProfileRoute
   '/s/$slug': typeof SSlugRoute
   '/edit/': typeof EditIndexRoute
 }
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/edit/new': typeof EditNewRoute
+  '/edit/profile': typeof EditProfileRoute
   '/s/$slug': typeof SSlugRoute
   '/edit': typeof EditIndexRoute
 }
@@ -68,20 +76,29 @@ export interface FileRoutesById {
   '/edit': typeof EditRouteWithChildren
   '/login': typeof LoginRoute
   '/edit/new': typeof EditNewRoute
+  '/edit/profile': typeof EditProfileRoute
   '/s/$slug': typeof SSlugRoute
   '/edit/': typeof EditIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/edit' | '/login' | '/edit/new' | '/s/$slug' | '/edit/'
+  fullPaths:
+    | '/'
+    | '/edit'
+    | '/login'
+    | '/edit/new'
+    | '/edit/profile'
+    | '/s/$slug'
+    | '/edit/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/edit/new' | '/s/$slug' | '/edit'
+  to: '/' | '/login' | '/edit/new' | '/edit/profile' | '/s/$slug' | '/edit'
   id:
     | '__root__'
     | '/'
     | '/edit'
     | '/login'
     | '/edit/new'
+    | '/edit/profile'
     | '/s/$slug'
     | '/edit/'
   fileRoutesById: FileRoutesById
@@ -130,6 +147,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/edit/profile': {
+      id: '/edit/profile'
+      path: '/profile'
+      fullPath: '/edit/profile'
+      preLoaderRoute: typeof EditProfileRouteImport
+      parentRoute: typeof EditRoute
+    }
     '/edit/new': {
       id: '/edit/new'
       path: '/new'
@@ -142,11 +166,13 @@ declare module '@tanstack/react-router' {
 
 interface EditRouteChildren {
   EditNewRoute: typeof EditNewRoute
+  EditProfileRoute: typeof EditProfileRoute
   EditIndexRoute: typeof EditIndexRoute
 }
 
 const EditRouteChildren: EditRouteChildren = {
   EditNewRoute: EditNewRoute,
+  EditProfileRoute: EditProfileRoute,
   EditIndexRoute: EditIndexRoute,
 }
 
