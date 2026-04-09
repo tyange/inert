@@ -1,6 +1,6 @@
+import { api } from "#/lib/api.ts";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useRef } from "react";
-import { api } from "#/lib/api";
 
 export const Route = createFileRoute("/edit/new")({ component: EditNewPage });
 
