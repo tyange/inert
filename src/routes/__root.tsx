@@ -1,4 +1,4 @@
-import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
+import { HeadContent, Link, Scripts, createRootRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie } from "@tanstack/react-start/server";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -27,7 +27,25 @@ export const Route = createRootRoute({
     links: [{ rel: "stylesheet", href: appCss }],
   }),
   shellComponent: RootDocument,
+  notFoundComponent: NotFound,
 });
+
+function NotFound() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <h1 className="text-5xl font-light tracking-widest text-(--sea-ink)">404</h1>
+        <p className="text-(--sea-ink-soft) text-sm">페이지를 찾을 수 없습니다</p>
+        <Link
+          to="/"
+          className="text-sm text-(--sea-ink-soft) hover:text-(--sea-ink) no-underline mt-2"
+        >
+          ← 돌아가기
+        </Link>
+      </div>
+    </div>
+  );
+}
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   const { theme } = Route.useRouteContext();
