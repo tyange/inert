@@ -23,14 +23,14 @@ jobs:
       - name: Build
         run: bun run build
 
-      - name: Clean old dist
+      - name: Clean old output
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            rm -rf ${{ secrets.DEPLOY_PATH }}/dist
+            rm -rf ${{ secrets.DEPLOY_PATH }}/.output
 
       - name: Deploy files via SCP
         uses: appleboy/scp-action@v0.1.7
@@ -38,7 +38,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist"
+          source: ".output"
           target: ${{ secrets.DEPLOY_PATH }}
           strip_components: 0
 
