@@ -2,6 +2,7 @@ import { HeadContent, Link, Scripts, createRootRoute } from "@tanstack/react-rou
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie } from "@tanstack/react-start/server";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { getAuthFn } from "#/lib/server-fns";
 import appCss from "../styles.css?url";
 
 const queryClient = new QueryClient();
@@ -14,8 +15,8 @@ const getTheme = createServerFn().handler(async () => {
 
 export const Route = createRootRoute({
   beforeLoad: async () => {
-    const theme = await getTheme();
-    return { theme };
+    const [theme, auth] = await Promise.all([getTheme(), getAuthFn()]);
+    return { theme, isLoggedIn: auth.isLoggedIn };
   },
   head: () => ({
     meta: [
