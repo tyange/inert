@@ -4,18 +4,45 @@ import { useQuery } from "@tanstack/react-query";
 import useEmblaCarousel from "embla-carousel-react";
 import { ArrowLeft } from "lucide-react";
 
-import { api } from "../lib/api.ts";
+import { api, type StillResponse } from "../lib/api.ts";
 
 export const Route = createFileRoute("/s/$slug")({
   component: StillPage,
   validateSearch: (search: Record<string, unknown>) => ({
     img: Number(search.img) || 0,
   }),
+  loader: ({ params }) => api.stills.get(params.slug),
+  head: ({ loaderData }) => {
+    const still = loaderData as StillResponse | undefined;
+    if (!still) return {};
+
+    const title = still.display_name
+      ? `${still.display_name}의 스틸 — inert`
+      : `@${still.username}의 스틸 — inert`;
+    const description = still.caption ? still.caption.slice(0, 200) : "inert에서 공유된 스틸";
+    const image = still.images[0]?.image_url;
+
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "article" },
+        ...(image ? [{ property: "og:image", content: image }] : []),
+        { name: "twitter:card", content: image ? "summary_large_image" : "summary" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+        ...(image ? [{ name: "twitter:image", content: image }] : []),
+      ],
+    };
+  },
 });
 
 function StillPage() {
   const { slug } = Route.useParams();
   const { img } = Route.useSearch();
+  const loaderData = Route.useLoaderData();
 
   const {
     data: still,
@@ -24,6 +51,7 @@ function StillPage() {
   } = useQuery({
     queryKey: ["still", slug],
     queryFn: () => api.stills.get(slug),
+    initialData: loaderData,
   });
 
   if (isLoading) {
