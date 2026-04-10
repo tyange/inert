@@ -44,12 +44,12 @@ function ImageSlider({ images }: { images: { image_url: string }[] }) {
       </div>
 
       {images.length > 1 && (
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 rounded-full bg-black/20 px-2 py-1.5">
           {images.map((_, i) => (
             <span
               key={i}
               className={`block w-1.5 h-1.5 rounded-full transition-colors ${
-                i === activeIndex ? "bg-white" : "bg-white/40"
+                i === activeIndex ? "bg-white" : "bg-white/50"
               }`}
             />
           ))}
