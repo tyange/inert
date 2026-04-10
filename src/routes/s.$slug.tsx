@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useCallback, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useEmblaCarousel from "embla-carousel-react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Share2 } from "lucide-react";
 
 import { api, type StillResponse } from "../lib/api.ts";
 
@@ -80,6 +80,11 @@ function StillPage() {
           >
             <ArrowLeft size={18} />
           </Link>
+          <ShareButton
+            title={
+              still.display_name ? `${still.display_name}의 스틸` : `@${still.username}의 스틸`
+            }
+          />
         </div>
 
         <div className="relative">
@@ -161,5 +166,32 @@ function DetailImageSlider({
         </div>
       )}
     </div>
+  );
+}
+
+function ShareButton({ title }: { title: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = async () => {
+    const url = window.location.href;
+
+    if (navigator.share) {
+      await navigator.share({ title, url });
+      return;
+    }
+
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={handleShare}
+      className="absolute top-4 -right-12 flex items-center justify-center w-9 h-9 rounded-full bg-(--surface) backdrop-blur-sm text-(--sea-ink) hover:bg-(--surface-strong) border border-(--line) cursor-pointer"
+    >
+      {copied ? <span className="text-xs">✓</span> : <Share2 size={16} />}
+    </button>
   );
 }
