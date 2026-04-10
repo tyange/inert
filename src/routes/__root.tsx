@@ -25,7 +25,10 @@ export const Route = createRootRoute({
       { title: "inert" },
       { name: "description", content: "무해한 사진과 글" },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "stylesheet", href: appCss },
+    ],
   }),
   shellComponent: RootDocument,
   notFoundComponent: NotFound,
