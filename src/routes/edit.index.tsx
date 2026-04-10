@@ -1,9 +1,63 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import useEmblaCarousel from "embla-carousel-react";
 import { BookOpen, Trash2 } from "lucide-react";
 import { api } from "#/lib/api";
 
 export const Route = createFileRoute("/edit/")({ component: EditIndexPage });
+
+function ImageSlider({ images }: { images: { image_url: string }[] }) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setActiveIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
+  return (
+    <div className="relative">
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex touch-pan-y touch-pinch-zoom">
+          {images.map((img, i) => (
+            <div key={i} className="min-w-0 grow-0 shrink-0 basis-full">
+              <img
+                src={img.image_url}
+                alt=""
+                className="w-full aspect-4/3 object-cover"
+                loading="lazy"
+                draggable={false}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {images.length > 1 && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+          {images.map((_, i) => (
+            <span
+              key={i}
+              className={`block w-1.5 h-1.5 rounded-full transition-colors ${
+                i === activeIndex ? "bg-white" : "bg-white/40"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function EditIndexPage() {
   const queryClient = useQueryClient();
@@ -41,13 +95,8 @@ function EditIndexPage() {
       ) : (
         stills.map((still) => (
           <article key={still.still_id} className="pb-4">
-            {still.images[0] ? (
-              <img
-                src={still.images[0].image_url}
-                alt={still.caption ?? ""}
-                className="w-full aspect-4/3 object-cover"
-                loading="lazy"
-              />
+            {still.images.length > 0 ? (
+              <ImageSlider images={still.images} />
             ) : (
               <div className="w-full aspect-4/3 flex items-center justify-center bg-(--surface) text-(--sea-ink-soft) text-xs">
                 이미지 없음
@@ -63,6 +112,7 @@ function EditIndexPage() {
                 <Link
                   to="/s/$slug"
                   params={{ slug: still.slug }}
+                  search={{ img: 0 }}
                   className="inline-flex items-center gap-1 text-xs text-(--sea-ink-soft) hover:text-(--sea-ink) no-underline"
                 >
                   <BookOpen size={13} />
