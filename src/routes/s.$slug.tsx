@@ -73,10 +73,10 @@ function StillPage() {
   return (
     <div className="min-h-screen">
       <div className="max-w-lg mx-auto relative">
-        <div className="sticky top-0 z-30 h-0">
+        <div className="sticky top-0 z-30 flex items-center gap-2 px-4 py-3 lg:h-0 lg:p-0">
           <Link
             to="/"
-            className="absolute top-4 -left-12 flex items-center justify-center w-9 h-9 rounded-full bg-(--surface) backdrop-blur-sm text-(--sea-ink) hover:bg-(--surface-strong) border border-(--line) no-underline"
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-(--surface) backdrop-blur-sm text-(--sea-ink) hover:bg-(--surface-strong) border border-(--line) no-underline lg:absolute lg:top-4 lg:-left-12"
           >
             <ArrowLeft size={18} />
           </Link>
@@ -189,7 +189,7 @@ function ShareButton({ title }: { title: string }) {
     <button
       type="button"
       onClick={handleShare}
-      className="absolute top-4 -right-12 flex items-center justify-center w-9 h-9 rounded-full bg-(--surface) backdrop-blur-sm text-(--sea-ink) hover:bg-(--surface-strong) border border-(--line) cursor-pointer"
+      className="flex items-center justify-center w-9 h-9 rounded-full bg-(--surface) backdrop-blur-sm text-(--sea-ink) hover:bg-(--surface-strong) border border-(--line) cursor-pointer lg:absolute lg:top-16 lg:-left-12"
     >
       {copied ? <span className="text-xs">✓</span> : <Share2 size={16} />}
     </button>
