@@ -98,7 +98,12 @@ function StillPage() {
           <div className="prose prose-lg max-w-none text-(--sea-ink) font-serif">
             {(still.caption ?? "").split("\n\n").map((paragraph, i) => (
               <p key={i} className="text-base sm:text-lg leading-8 sm:leading-9 mb-6 last:mb-0">
-                {paragraph}
+                {paragraph.split("\n").map((line, j, arr) => (
+                  <span key={j}>
+                    {line}
+                    {j < arr.length - 1 && <br />}
+                  </span>
+                ))}
               </p>
             ))}
           </div>
