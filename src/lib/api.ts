@@ -1,3 +1,4 @@
+import imageCompression from "browser-image-compression";
 import { authRequestFn, uploadImageFn } from "./server-fns";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
@@ -92,7 +93,17 @@ export const api = {
 
   images: {
     upload: async (file: File): Promise<UploadImageResponse> => {
-      const buffer = await file.arrayBuffer();
+      const compressed =
+        file.type === "image/gif"
+          ? file
+          : await imageCompression(file, {
+              maxSizeMB: 2,
+              maxWidthOrHeight: 2048,
+              useWebWorker: true,
+              initialQuality: 0.85,
+            });
+
+      const buffer = await compressed.arrayBuffer();
       const bytes = new Uint8Array(buffer);
       let binary = "";
       for (let i = 0; i < bytes.length; i++) {
@@ -101,7 +112,7 @@ export const api = {
       const fileBase64 = btoa(binary);
 
       return uploadImageFn({
-        data: { fileBase64, fileName: file.name, fileType: file.type },
+        data: { fileBase64, fileName: file.name, fileType: compressed.type },
       }) as Promise<UploadImageResponse>;
     },
   },
