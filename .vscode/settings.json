@@ -11,6 +11,4 @@
   "oxc.fmt.configPath": ".oxfmtrc.json",
   "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
-  "prettier.enable": false,
-  "biome.enabled": false
 }
