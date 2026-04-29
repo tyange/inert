@@ -153,7 +153,7 @@ function FeedPage() {
                 </div>
               )}
 
-              <div className="px-4 pt-3">
+              <div className="px-4 pt-3 flex flex-col gap-2">
                 <Link
                   to="/u/$username"
                   params={{ username: still.username }}
